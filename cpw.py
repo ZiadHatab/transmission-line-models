@@ -373,16 +373,18 @@ class CPW:
         C = C + C_corr
         # updating R
         R_corr = np.array([R_rad(w,s,wg,t,ff,er_real) for ff in f])
-        R = R + R_corr        
-        gamma = np.sqrt( (R + 1j*omega*L)*(G + 1j*omega*C) )
       
         # correction based on [3]
-        # updating alpha = Re{gamma}
+        # updating R_corr
         f1 = 1 + 0.45*(w/d)**4
         f2 = 1.87 + 273.18/( 47.6 + 1.29*(er_real-9)**2 )
         f3 = wg/wtot
         fg1 = 2*c0/1.1/wtot/np.sqrt(2*(er_real-1))
-        gamma = gamma.real*( 1 + f1*f2*f3/(1 + 19.83*(f/fg1-1)**2) ) + 1j*gamma.imag
+        R_corr = R_corr*( 1 + f1*f2*f3/(1 + 19.83*(f/fg1-1)**2) )
+
+        R = R + R_corr        
+
+        gamma = np.sqrt( (R + 1j*omega*L)*(G + 1j*omega*C) )
 
         # Final results
         self.gamma = gamma
