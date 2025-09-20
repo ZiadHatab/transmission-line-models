@@ -143,7 +143,12 @@ def R_v1(w,s,wg,t,f,sigma=5.8e7):
     else:
         FcL = 1/2/s + tH/s**2 + pc0/s*( np.pi*b/(a+b) + pc6/2 + 1/8*( -pc1 + pc3*(pc1+2) - b/a*pc4 - 2*(a**2+b**2)/a/(a+b) ) )
         FgL = 1/2/s + tH/s**2 + pc0/s*( np.pi*a/(a+b) + pc6/2 + 1/8*( -a/b*pc1 + a/b*pc3*(pc1+2) - pc4 - 2*(a**2+b**2)/b/(a+b) ) )
-            
+
+    # Modifications based on the FORTAN code from Heinrich 1993
+    omega_c1 = omega_c1*np.sqrt(2)
+    FcL = FcL * (1 - 0.1 * (a/b)**2)
+    FgL = FgL * (1 - 0.1 * (a/b)**2)
+
     F0 = F(w,s,wg,t/2)
     
     Rc0 = 1/sigma/w/t
@@ -223,6 +228,10 @@ def L_v1(w,s,wg,t,f,sigma=5.8e7):
     else:
         FcL = 1/2/s + tH/s**2 + pc0/s*( np.pi*b/(a+b) + pc6/2 + 1/8*( -pc1 + pc3*(pc1+2) - b/a*pc4 - 2*(a**2+b**2)/a/(a+b) ) )
         FgL = 1/2/s + tH/s**2 + pc0/s*( np.pi*a/(a+b) + pc6/2 + 1/8*( -a/b*pc1 + a/b*pc3*(pc1+2) - pc4 - 2*(a**2+b**2)/b/(a+b) ) )
+    
+    # Modifications based on the FORTAN code from Heinrich 1993
+    FcL = FcL * (1 - 0.1 * (a/b)**2)
+    FgL = FgL * (1 - 0.1 * (a/b)**2)
     
     F0 = F(w,s,wg,t/2)
     F1 = F0 + K(k2)/Kp(k2) - K(k1)/Kp(k1)
